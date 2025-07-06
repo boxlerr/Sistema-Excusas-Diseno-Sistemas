@@ -2,9 +2,6 @@
 
 ## 📋 Información del Proyecto
 
-**Repositorio:** [Link al repositorio GitHub]
-**Integrantes:** [Tu nombre completo]
-
 ---
 
 Este proyecto implementa un sistema automatizado para gestionar las excusas de empleados que llegan tarde en la empresa ficticia **"Excusas S.A."**.  
