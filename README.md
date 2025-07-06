@@ -2,9 +2,6 @@
 
 ## 📋 Información del Proyecto
 
-**Repositorio:** https://github.com/boxlerr/Sistema-Excusas-Diseno-Sistemas
-**Integrantes:** Julián Boxler
-
 ---
 
 Este proyecto implementa un sistema automatizado para gestionar las excusas de empleados que llegan tarde en la empresa ficticia **"Excusas S.A."**.  
