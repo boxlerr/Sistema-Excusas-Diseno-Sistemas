@@ -1,7 +1,7 @@
 package com.empresa.excusas.clases.encargados;
 
 import com.empresa.excusas.clases.AdministradorProntuarios;
-import com.empresa.excusas.clases.Email;
+import com.empresa.excusas.clases.ServicioEmail;
 import com.empresa.excusas.clases.Excusa;
 import com.empresa.excusas.clases.Prontuario;
 import com.empresa.excusas.clases.tiposExcusas.ExcusaInverosimil;
@@ -28,8 +28,13 @@ public class CEO extends EncargadoBase implements ObserverProntuario {
         System.out.println("🎩 " + this.getNombre() + " (CEO) procesando excusa extremadamente inverosímil: " + excusa.getTipoExcusa().getDescripcion());
         modoOperacion();
 
+        // Usar los métodos de la excusa (Tell, Don't Ask)
+        ExcusaInverosimil excusaInverosimil = (ExcusaInverosimil) excusa.getTipoExcusa();
+        excusaInverosimil.procesarExcusaInverosimil();
+        excusaInverosimil.registrarRechazo();
+
         // EXACTAMENTE como dice la consigna: "Aprobado por creatividad"
-        EmailSender emailSender = new Email();
+        EmailSender emailSender = new ServicioEmail();
         emailSender.enviarEmail(
                 excusa.getEmpleado().getEmail(),
                 this.getEmail(),
@@ -53,7 +58,7 @@ public class CEO extends EncargadoBase implements ObserverProntuario {
     public void actualizar(Prontuario prontuario) {
         // No se notifica a sí mismo
         if (!prontuario.getEmailEmpleado().equals(this.getEmail())) {
-            EmailSender emailSender = new Email();
+            EmailSender emailSender = new ServicioEmail();
             emailSender.enviarEmail(
                     this.getEmail(),
                     "sistema@empresa.com",

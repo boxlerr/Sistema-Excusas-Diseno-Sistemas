@@ -2,6 +2,7 @@ package com.empresa.excusas.clases.modoOperacion;
 
 import com.empresa.excusas.clases.Excusa;
 import com.empresa.excusas.clasesAbstractas.EncargadoBase;
+import com.empresa.excusas.interfaces.IEncargado;
 import com.empresa.excusas.interfaces.ModoOperacion;
 
 public class ModoNormal implements ModoOperacion {

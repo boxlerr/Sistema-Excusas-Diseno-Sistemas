@@ -1,7 +1,7 @@
 package com.empresa.excusas.clases.encargados;
 
-import com.empresa.excusas.clases.Email;
 import com.empresa.excusas.clases.Excusa;
+import com.empresa.excusas.clases.ServicioEmail;
 import com.empresa.excusas.clases.tiposExcusas.ExcusaTrivial;
 import com.empresa.excusas.clasesAbstractas.EncargadoBase;
 import com.empresa.excusas.interfaces.EmailSender;
@@ -23,8 +23,12 @@ public class Recepcionista extends EncargadoBase {
         System.out.println("🏢 " + this.getNombre() + " (Recepcionista) procesando excusa: " + excusa.getTipoExcusa().getDescripcion());
         modoOperacion();
 
+        // Usar los métodos de la excusa (Tell, Don't Ask)
+        ExcusaTrivial excusaTrivial = (ExcusaTrivial) excusa.getTipoExcusa();
+        excusaTrivial.procesarExcusaTrivial();
+
         // EXACTAMENTE como dice la consigna: asunto "motivo demora" y mensaje "la licencia fue aceptada"
-        EmailSender emailSender = new Email();
+        EmailSender emailSender = new ServicioEmail();
         emailSender.enviarEmail(
                 excusa.getEmpleado().getEmail(),
                 this.getEmail(),

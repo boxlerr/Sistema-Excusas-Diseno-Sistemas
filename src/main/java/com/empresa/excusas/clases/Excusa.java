@@ -1,14 +1,13 @@
 package com.empresa.excusas.clases;
 
-import com.empresa.excusas.clasesAbstractas.Empleado;
+import com.empresa.excusas.clasesAbstractas.ExcusaBase;
 import com.empresa.excusas.clasesAbstractas.TipoExcusa;
 
-public class Excusa {
-    private Empleado empleado;
+public class Excusa extends ExcusaBase {
     private TipoExcusa tipoExcusa;
 
-    public Excusa(Empleado empleado, TipoExcusa tipoExcusa) {
-        this.empleado = empleado;
+    public Excusa(com.empresa.excusas.clasesAbstractas.Empleado empleado, String descripcion, TipoExcusa tipoExcusa) {
+        super(empleado, descripcion);
         this.tipoExcusa = tipoExcusa;
     }
 
@@ -16,14 +15,15 @@ public class Excusa {
         return tipoExcusa;
     }
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public void setTipoExcusa(TipoExcusa tipoExcusa) {
+        this.tipoExcusa = tipoExcusa;
     }
 
     @Override
     public String toString() {
         return "Excusa{" +
-                "empleado=" + empleado +
+                "empleado=" + getEmpleado() +
+                ", descripcion='" + getDescripcion() + '\'' +
                 ", tipoExcusa=" + tipoExcusa +
                 '}';
     }

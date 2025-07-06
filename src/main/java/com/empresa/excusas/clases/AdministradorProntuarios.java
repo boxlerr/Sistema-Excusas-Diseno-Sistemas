@@ -6,14 +6,12 @@ import com.empresa.excusas.interfaces.ObserverProntuario;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdministradorProntuarios implements IAdministradorProntuarios {
+public class AdministradorProntuarios extends Observable implements IAdministradorProntuarios {
     private static AdministradorProntuarios instancia;
     private List<Prontuario> prontuarios;
-    private List<ObserverProntuario> observers;
 
     private AdministradorProntuarios() {
         prontuarios = new ArrayList<>();
-        observers = new ArrayList<>();
     }
 
     public static synchronized AdministradorProntuarios getInstancia() {
@@ -27,24 +25,22 @@ public class AdministradorProntuarios implements IAdministradorProntuarios {
     public void agregarProntuario(Prontuario prontuario) {
         prontuarios.add(prontuario);
         System.out.println("Prontuario agregado: " + prontuario);
-        notificarObservers(prontuario);
+        notificarObserversConProntuario(prontuario);
     }
 
     @Override
     public void agregarObserver(ObserverProntuario observer) {
-        observers.add(observer);
+        super.agregarObserver(observer);
     }
 
     @Override
     public void removerObserver(ObserverProntuario observer) {
-        observers.remove(observer);
+        super.removerObserver(observer);
     }
 
     @Override
     public void notificarObservers(Prontuario prontuario) {
-        for (ObserverProntuario observer : observers) {
-            observer.actualizar(prontuario);
-        }
+        notificarObserversConProntuario(prontuario);
     }
 
     public List<Prontuario> getProntuarios() {

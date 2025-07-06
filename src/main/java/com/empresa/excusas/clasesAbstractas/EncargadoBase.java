@@ -1,17 +1,46 @@
 package com.empresa.excusas.clasesAbstractas;
 
 import com.empresa.excusas.clases.Excusa;
-import com.empresa.excusas.interfaces.Encargado;
+import com.empresa.excusas.interfaces.IEncargado;
 import com.empresa.excusas.interfaces.ModoOperacion;
 
-public abstract class EncargadoBase extends Empleado implements Encargado {
-    private Encargado siguiente;
+public abstract class EncargadoBase implements IEncargado {
+    private String nombre;
+    private String email;
+    private int legajo;
+    private IEncargado siguiente;
     private ModoOperacion modoOperacion;
 
     public EncargadoBase(String nombre, String email, int legajo, ModoOperacion modoOperacion) {
-        super(nombre, email, legajo);
+        this.nombre = nombre;
+        this.email = email;
+        this.legajo = legajo;
         this.modoOperacion = modoOperacion;
         this.siguiente = null;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getLegajo() {
+        return legajo;
+    }
+
+    public void setLegajo(int legajo) {
+        this.legajo = legajo;
     }
 
     public void setModoOperacion(ModoOperacion modoOperacion) {
@@ -30,21 +59,32 @@ public abstract class EncargadoBase extends Empleado implements Encargado {
     }
 
     @Override
-    public void setSiguiente(Encargado siguiente) {
+    public void setSiguiente(IEncargado siguiente) {
         this.siguiente = siguiente;
     }
 
-    public Encargado getSiguiente() {
+    public IEncargado getSiguiente() {
         return this.siguiente;
     }
 
     @Override
     public void manejarExcusa(Excusa excusa) {
-        if (modoOperacion != null) {
-            modoOperacion.manejarExcusa(this, excusa);
+        if (puedeManejar(excusa)) {
+            procesar(excusa);
+        } else if (siguiente != null) {
+            siguiente.manejarExcusa(excusa);
         } else {
-            System.out.println("No hay modo de operación asignado.");
+            System.out.println("❌ No se pudo procesar la excusa. No hay encargado disponible.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "EncargadoBase{" +
+                "nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", legajo=" + legajo +
+                '}';
     }
 
     public abstract boolean puedeManejar(Excusa excusa);

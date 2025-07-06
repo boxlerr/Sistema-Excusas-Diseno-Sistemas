@@ -1,16 +1,20 @@
 package com.empresa.excusas.clasesAbstractas;
 
-public abstract class TipoExcusa {
+import com.empresa.excusas.interfaces.ITipoExcusa;
+
+public abstract class TipoExcusa implements ITipoExcusa {
     private String descripcion;
 
     public TipoExcusa(String descripcion) {
         this.descripcion = descripcion;
     }
 
+    @Override
     public String getDescripcion() {
         return descripcion;
     }
 
+    @Override
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -22,6 +26,7 @@ public abstract class TipoExcusa {
                 '}';
     }
 
+    @Override
     public boolean debeEscalar() {
         return false;
     }

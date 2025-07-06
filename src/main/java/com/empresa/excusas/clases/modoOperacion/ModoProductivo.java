@@ -1,9 +1,10 @@
 package com.empresa.excusas.clases.modoOperacion;
 
-import com.empresa.excusas.clases.Email;
 import com.empresa.excusas.clases.Excusa;
+import com.empresa.excusas.clases.ServicioEmail;
 import com.empresa.excusas.clasesAbstractas.EncargadoBase;
 import com.empresa.excusas.interfaces.EmailSender;
+import com.empresa.excusas.interfaces.IEncargado;
 import com.empresa.excusas.interfaces.ModoOperacion;
 
 public class ModoProductivo implements ModoOperacion {
@@ -28,7 +29,7 @@ public class ModoProductivo implements ModoOperacion {
     }
 
     private void enviarEmailAlCTO(EncargadoBase encargado, Excusa excusa) {
-        EmailSender emailSender = new Email();
+        EmailSender emailSender = new ServicioEmail();
         emailSender.enviarEmail(
                 "cto@empresa.com",
                 encargado.getEmail(),
