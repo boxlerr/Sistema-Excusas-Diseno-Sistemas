@@ -1,7 +1,7 @@
 INFORMACIÓN DEL REPOSITORIO - PARCIAL 2 DISEÑO DE SISTEMAS
 
-Repositorio GitHub: [Link al repositorio GitHub]
-Integrantes: [Tu nombre completo]
+Repositorio GitHub: https://github.com/boxlerr/Sistema-Excusas-Diseno-Sistemas
+Integrantes: Julián Boxler
 
 ESTRUCTURA DEL REPOSITORIO:
 - Rama main: Código estable y funcional

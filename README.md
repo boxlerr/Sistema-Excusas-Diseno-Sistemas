@@ -2,8 +2,8 @@
 
 ## 📋 Información del Proyecto
 
-**Repositorio:** [Link al repositorio GitHub]
-**Integrantes:** [Tu nombre completo]
+**Repositorio:** https://github.com/boxlerr/Sistema-Excusas-Diseno-Sistemas
+**Integrantes:** Julián Boxler
 
 ---
 
