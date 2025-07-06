@@ -1,5 +1,11 @@
-
 # 🏢 Sistema de Gestión de Excusas - Excusas S.A.
+
+## 📋 Información del Proyecto
+
+**Repositorio:** [Link al repositorio GitHub]
+**Integrantes:** [Tu nombre completo]
+
+---
 
 Este proyecto implementa un sistema automatizado para gestionar las excusas de empleados que llegan tarde en la empresa ficticia **"Excusas S.A."**.  
 El sistema utiliza múltiples **patrones de diseño** y **principios SOLID** para crear una solución robusta, escalable y mantenible.
@@ -39,12 +45,14 @@ El sistema utiliza múltiples **patrones de diseño** y **principios SOLID** par
 ## 🏗️ Arquitectura y Patrones de Diseño
 
 ### 🔗 Chain of Responsibility
-> **Ubicación:** `interfaces/Encargado.java`, `clasesAbstractas/EncargadoBase.java`
+> **Ubicación:** `interfaces/IEncargado.java`, `clasesAbstractas/EncargadoBase.java`
 
 ```java
-public interface Encargado {
+public interface IEncargado {
     void manejarExcusa(Excusa excusa);
-    void setSiguiente(Encargado e);
+    void setSiguiente(IEncargado e);
+    boolean puedeManejar(Excusa excusa);
+    void procesar(Excusa excusa);
 }
 ```
 
@@ -104,8 +112,10 @@ public interface ObserverProntuario {
 
 ```java
 public void manejarExcusa(Excusa excusa) {
-    if (modoOperacion != null) {
-        modoOperacion.manejarExcusa(this, excusa);
+    if (puedeManejar(excusa)) {
+        procesar(excusa);
+    } else if (siguiente != null) {
+        siguiente.manejarExcusa(excusa);
     }
 }
 ```
@@ -173,74 +183,59 @@ public void manejarExcusa(Excusa excusa) {
 ## 🚀 Tecnologías Utilizadas
 
 - **Java 17**
+- **Spring Boot 3.5.3**
 - **Maven**
 - **JUnit 5**
+- **H2 Database**
 - **Patrones:** Chain of Responsibility, Strategy, Singleton, Observer, Template Method
-- **Principios SOLID**
 
 ---
 
 ## 📁 Estructura del Proyecto
 
-```bash
-src/
-├── main/java/com/empresa/excusas/
-│   ├── interfaces/           # Interfaces
-│   ├── clases/               # Clases concretas
-│   ├── clasesAbstractas/     # Clases abstractas
-│   ├── enums/                # Enumeraciones
-│   └── Main.java             # Clase principal
-└── test/java/com/empresa/excusas/
-    └── tests/                # Pruebas unitarias
+```
+src/main/java/com/empresa/excusas/
+├── interfaces/           # Interfaces del sistema
+├── clasesAbstractas/     # Clases abstractas base
+├── clases/              # Implementaciones concretas
+│   ├── encargados/      # Cadena de encargados
+│   ├── modoOperacion/   # Estrategias de operación
+│   └── tiposExcusas/    # Tipos de excusa
+└── TestSistema.java     # Clase de prueba principal
 ```
 
 ---
 
-## ⚙️ Cómo Compilar y Ejecutar el Proyecto
+## 🎯 Milestones del Proyecto
 
-### 📌 Requisitos previos
-- Java 17 o superior
-- Maven instalado
-
-### ▶️ Compilación
-```bash
-mvn compile
-```
-
-### ▶️ Ejecutar
-```bash
-mvn exec:java -Dexec.mainClass="com.empresa.excusas.Main"
-```
-Si no tienes configurado el plugin exec-maven-plugin, puedes compilar manualmente y ejecutar con:
-```bash
-javac -d out $(find src/main/java -name "*.java")
-java -cp out com.empresa.excusas.Main
-```
-
-### ▶️ Ejecutar Tests
-```bash
-mvn test
-```
+1. **Diseño del sistema**: Crear el modelo de clases, relaciones e interfaces respetando OOP y SOLID.
+2. **Implementación de la cadena de encargados**: Codificar la lógica de manejo de excusas con la cadena de responsabilidad.
+3. **Lógica de emails y comunicación**: Implementar el envío de emails según el comportamiento de cada encargado.
+4. **Registro de prontuarios**: Implementar el administrador de prontuarios y su uso por el CEO.
+5. **Tests del sistema**: Agregar pruebas unitarias con JUnit 5 para cubrir comportamiento esperado.
+6. **Diagramas y documentación**: Crear y entregar los diagramas UML y justificaciones de patrones.
+7. **Exposición del sistema vía API REST**: Implementar una API RESTful con Spring Boot para permitir que se ingresen excusas desde el exterior.
 
 ---
 
-## ✅ Estado Actual del Proyecto
+## 🏷️ Labels del Proyecto
 
-- ✔ Sistema completo funcional
-- ✔ Patrones aplicados correctamente
-- ✔ Tests incluidos
-- ✔ Clasificación inteligente implementada
-
----
-
-## 👨‍💻 Autor
-
-### Boxler Julián
-
-**Desarrollador de Software | Fundador de [Vaxler](https://vaxler.com.ar/)**
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-JulianBoxler-blue?logo=linkedin)](https://www.linkedin.com/in/julianboxler/)  
-[![Web](https://img.shields.io/badge/Web-vaxler.com.ar-green?logo=google-chrome)](https://vaxler.com.ar/)
+- **bug**: Para errores detectados en la lógica del sistema
+- **feature**: Para nuevas funcionalidades
+- **refactor**: Para reestructurar el código sin alterar el comportamiento
+- **oop**: Cambios que responden a principios de programación orientada a objetos
+- **solid**: Aplicación de principios SOLID
+- **chain-of-responsibility**: Cambios relacionados con la cadena de encargados
+- **email**: Funcionalidades asociadas al envío de emails
+- **prontuario**: Tareas vinculadas al registro o persistencia de prontuarios
+- **tests**: Implementación o mejora de pruebas unitarias
+- **api**: Tareas vinculadas a la creación o mejora de la API REST con Spring Boot
+- **controller**: Tareas relacionadas con endpoints y controladores REST
+- **service**: Lógica de negocio dentro de servicios de Spring
+- **documentation**: Diagramas, README, explicaciones de patrones, API Docs
+- **uml**: Cambios específicos sobre diagramas de clases o casos de uso
+- **help wanted**: Si necesitas asistencia externa en un issue
+- **enhancement**: Mejoras en la calidad del sistema
 
 ---
 

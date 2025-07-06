@@ -1,0 +1,54 @@
+INFORMACIÓN DEL REPOSITORIO - PARCIAL 2 DISEÑO DE SISTEMAS
+
+Repositorio GitHub: [Link al repositorio GitHub]
+Integrantes: [Tu nombre completo]
+
+ESTRUCTURA DEL REPOSITORIO:
+- Rama main: Código estable y funcional
+- Rama dev: Desarrollo activo
+- Rama test: Pruebas y testing
+
+MILESTONES CONFIGURADOS:
+1. Diseño del sistema: Crear el modelo de clases, relaciones e interfaces respetando OOP y SOLID.
+2. Implementación de la cadena de encargados: Codificar la lógica de manejo de excusas con la cadena de responsabilidad.
+3. Lógica de emails y comunicación: Implementar el envío de emails según el comportamiento de cada encargado.
+4. Registro de prontuarios: Implementar el administrador de prontuarios y su uso por el CEO.
+5. Tests del sistema: Agregar pruebas unitarias con JUnit 5 para cubrir comportamiento esperado.
+6. Diagramas y documentación: Crear y entregar los diagramas UML y justificaciones de patrones.
+7. Exposición del sistema vía API REST: Implementar una API RESTful con Spring Boot para permitir que se ingresen excusas desde el exterior.
+
+LABELS CONFIGURADOS:
+- bug: Para errores detectados en la lógica del sistema
+- feature: Para nuevas funcionalidades
+- refactor: Para reestructurar el código sin alterar el comportamiento
+- oop: Cambios que responden a principios de programación orientada a objetos
+- solid: Aplicación de principios SOLID
+- chain-of-responsibility: Cambios relacionados con la cadena de encargados
+- email: Funcionalidades asociadas al envío de emails
+- prontuario: Tareas vinculadas al registro o persistencia de prontuarios
+- tests: Implementación o mejora de pruebas unitarias
+- api: Tareas vinculadas a la creación o mejora de la API REST con Spring Boot
+- controller: Tareas relacionadas con endpoints y controladores REST
+- service: Lógica de negocio dentro de servicios de Spring
+- documentation: Diagramas, README, explicaciones de patrones, API Docs
+- uml: Cambios específicos sobre diagramas de clases o casos de uso
+- help wanted: Si necesitas asistencia externa en un issue
+- enhancement: Mejoras en la calidad del sistema
+
+COLABORADOR AGREGADO:
+- @underabloodysky
+
+TECNOLOGÍAS UTILIZADAS:
+- Java 17
+- Spring Boot 3.5.3
+- Maven
+- JUnit 5
+- H2 Database
+- Patrones de diseño: Chain of Responsibility, Strategy, Singleton, Observer, Template Method
+
+ESTADO ACTUAL:
+- ✅ Sistema base implementado con patrones de diseño
+- ✅ Tests unitarios con JUnit 5
+- ✅ Configuración Spring Boot lista
+- ✅ Base de datos H2 configurada
+- 🔄 Preparado para implementación de API REST 
