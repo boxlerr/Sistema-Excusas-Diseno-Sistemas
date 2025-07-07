@@ -1,40 +1,27 @@
 package com.empresa.excusas.controller;
 
+import com.empresa.excusas.clases.service.ProntuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
 @RequestMapping("/prontuarios")
 public class ProntuarioController {
-    private static final List<ProntuarioDTO> prontuarios = new ArrayList<>();
-    private static int nextId = 1;
+    private final ProntuarioService prontuarioService;
+
+    @Autowired
+    public ProntuarioController(ProntuarioService prontuarioService) {
+        this.prontuarioService = prontuarioService;
+    }
 
     @GetMapping
-    public List<ProntuarioDTO> getAll() {
-        return prontuarios;
+    public List<ProntuarioService.ProntuarioDTO> getAll() {
+        return prontuarioService.getAll();
     }
 
     @PostMapping
-    public ProntuarioDTO create(@RequestBody ProntuarioDTO dto) {
-        dto.setId(nextId++);
-        prontuarios.add(dto);
-        return dto;
-    }
-
-    // DTO interno para la iteración 1
-    public static class ProntuarioDTO {
-        private int id;
-        private int empleadoLegajo;
-        private String motivo;
-        private String fecha;
-        public ProntuarioDTO() {}
-        public int getId() { return id; }
-        public void setId(int id) { this.id = id; }
-        public int getEmpleadoLegajo() { return empleadoLegajo; }
-        public void setEmpleadoLegajo(int empleadoLegajo) { this.empleadoLegajo = empleadoLegajo; }
-        public String getMotivo() { return motivo; }
-        public void setMotivo(String motivo) { this.motivo = motivo; }
-        public String getFecha() { return fecha; }
-        public void setFecha(String fecha) { this.fecha = fecha; }
+    public ProntuarioService.ProntuarioDTO create(@RequestBody ProntuarioService.ProntuarioDTO dto) {
+        return prontuarioService.create(dto);
     }
 } 

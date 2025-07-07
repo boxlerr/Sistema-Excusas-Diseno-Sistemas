@@ -1,5 +1,7 @@
 package com.empresa.excusas.controller;
 
+import com.empresa.excusas.clases.service.EmpleadoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,49 +10,32 @@ import java.util.*;
 @RestController
 @RequestMapping("/empleados")
 public class EmpleadoController {
-    private static final List<EmpleadoDTO> empleados = new ArrayList<>();
-    private static int nextLegajo = 1000;
+    private final EmpleadoService empleadoService;
+
+    @Autowired
+    public EmpleadoController(EmpleadoService empleadoService) {
+        this.empleadoService = empleadoService;
+    }
 
     @GetMapping
-    public List<EmpleadoDTO> getAll() {
-        return empleados;
+    public List<EmpleadoService.EmpleadoDTO> getAll() {
+        return empleadoService.getAll();
     }
 
     @PostMapping
-    public ResponseEntity<EmpleadoDTO> create(@RequestBody EmpleadoDTO dto) {
-        if (dto.getNombre() == null || dto.getEmail() == null) {
+    public ResponseEntity<EmpleadoService.EmpleadoDTO> create(@RequestBody EmpleadoService.EmpleadoDTO dto) {
+        try {
+            EmpleadoService.EmpleadoDTO creado = empleadoService.create(dto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
-        dto.setLegajo(nextLegajo++);
-        empleados.add(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @GetMapping("/{legajo}")
-    public ResponseEntity<EmpleadoDTO> getByLegajo(@PathVariable int legajo) {
-        return empleados.stream()
-                .filter(e -> e.getLegajo() == legajo)
-                .findFirst()
+    public ResponseEntity<EmpleadoService.EmpleadoDTO> getByLegajo(@PathVariable int legajo) {
+        return empleadoService.getByLegajo(legajo)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    // DTO interno para la iteración 1
-    public static class EmpleadoDTO {
-        private String nombre;
-        private String email;
-        private int legajo;
-        public EmpleadoDTO() {}
-        public EmpleadoDTO(String nombre, String email, int legajo) {
-            this.nombre = nombre;
-            this.email = email;
-            this.legajo = legajo;
-        }
-        public String getNombre() { return nombre; }
-        public void setNombre(String nombre) { this.nombre = nombre; }
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-        public int getLegajo() { return legajo; }
-        public void setLegajo(int legajo) { this.legajo = legajo; }
     }
 } 
