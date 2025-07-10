@@ -1,19 +1,18 @@
 package com.empresa.excusas.model.clasesAbstractas;
 
 import com.empresa.excusas.model.interfaces.IExcusa;
+import jakarta.persistence.*;
 
+@MappedSuperclass
 public abstract class ExcusaBase implements IExcusa {
-    private Empleado empleado;
+    
+    @Column(nullable = false, length = 1000)
     private String descripcion;
 
-    public ExcusaBase(Empleado empleado, String descripcion) {
-        this.empleado = empleado;
-        this.descripcion = descripcion;
-    }
+    public ExcusaBase() {}
 
-    @Override
-    public Empleado getEmpleado() {
-        return empleado;
+    public ExcusaBase(Empleado empleado, String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
@@ -33,8 +32,7 @@ public abstract class ExcusaBase implements IExcusa {
     @Override
     public String toString() {
         return "ExcusaBase{" +
-                "empleado=" + empleado +
-                ", descripcion='" + descripcion + '\'' +
+                "descripcion='" + descripcion + '\'' +
                 '}';
     }
-} 
+}

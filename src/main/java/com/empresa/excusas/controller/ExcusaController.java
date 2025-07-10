@@ -1,93 +1,106 @@
 package com.empresa.excusas.controller;
 
+import com.empresa.excusas.model.Excusa;
+import com.empresa.excusas.service.ExcusaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.empresa.excusas.service.ExcusaService;
-
-import java.time.LocalDate;
-import java.util.*;
-import jakarta.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
-@RequestMapping("/excusas")
+@RequestMapping("/api/excusas")
+@CrossOrigin(origins = "*")
 public class ExcusaController {
-    
-    private final ExcusaService excusaService;
 
     @Autowired
-    public ExcusaController(ExcusaService excusaService) {
-        this.excusaService = excusaService;
-    }
+    private ExcusaService excusaService;
 
     @GetMapping
-    public List<ExcusaService.ExcusaDTO> getAll(
-            @RequestParam(required = false) String fechaDesde,
-            @RequestParam(required = false) String fechaHasta,
-            @RequestParam(required = false) String motivo,
-            @RequestParam(required = false) String encargado) {
-        return excusaService.getAllWithFilters(fechaDesde, fechaHasta, motivo, encargado);
+    public ResponseEntity<List<Excusa>> obtenerTodasLasExcusas() {
+        List<Excusa> excusas = excusaService.obtenerTodasLasExcusas();
+        return ResponseEntity.ok(excusas);
     }
 
     @PostMapping
-    public ResponseEntity<ExcusaService.ExcusaDTO> create(@Valid @RequestBody ExcusaService.ExcusaDTO dto) {
+    public ResponseEntity<Excusa> crearExcusa(@RequestBody CrearExcusaRequest request) {
         try {
-            ExcusaService.ExcusaDTO creada = excusaService.create(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+            Excusa excusa = excusaService.crearExcusa(
+                request.getLegajoEmpleado(), 
+                request.getDescripcion(), 
+                request.getTipoExcusa()
+            );
+            return ResponseEntity.status(HttpStatus.CREATED).body(excusa);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/busqueda")
-    public ResponseEntity<List<ExcusaService.ExcusaDTO>> buscarExcusas(
-            @RequestParam int legajo,
-            @RequestParam(required = false) String fechaDesde,
-            @RequestParam(required = false) String fechaHasta) {
-        
+    @GetMapping("/empleado/{legajo}")
+    public ResponseEntity<List<Excusa>> obtenerExcusasPorEmpleado(@PathVariable int legajo) {
+        List<Excusa> excusas = excusaService.obtenerExcusasPorLegajo(legajo);
+        return ResponseEntity.ok(excusas);
+    }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<List<Excusa>> obtenerExcusasPorTipo(@PathVariable String tipo) {
+        List<Excusa> excusas = excusaService.obtenerExcusasPorTipo(tipo);
+        return ResponseEntity.ok(excusas);
+    }
+
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<List<Excusa>> obtenerExcusasPorEstado(@PathVariable String estado) {
+        List<Excusa> excusas = excusaService.obtenerExcusasPorEstado(estado);
+        return ResponseEntity.ok(excusas);
+    }
+
+    @GetMapping("/fecha")
+    public ResponseEntity<List<Excusa>> obtenerExcusasPorFecha(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fin) {
+        List<Excusa> excusas = excusaService.obtenerExcusasPorFecha(inicio, fin);
+        return ResponseEntity.ok(excusas);
+    }
+
+    @PutMapping("/{id}/estado")
+    public ResponseEntity<Excusa> actualizarEstado(@PathVariable Long id, @RequestBody ActualizarEstadoRequest request) {
         try {
-            List<ExcusaService.ExcusaDTO> excusas = excusaService.buscarPorLegajoYFechas(legajo, fechaDesde, fechaHasta);
-            return ResponseEntity.ok(excusas);
+            Excusa excusa = excusaService.actualizarEstadoExcusa(id, request.getEstado());
+            return ResponseEntity.ok(excusa);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
-
-    @GetMapping("/rechazadas")
-    public ResponseEntity<List<ExcusaService.ExcusaDTO>> getExcusasRechazadas() {
-        List<ExcusaService.ExcusaDTO> excusasRechazadas = excusaService.getExcusasRechazadas();
-        return ResponseEntity.ok(excusasRechazadas);
+    @GetMapping("/empleado/{legajo}/count")
+    public ResponseEntity<Long> contarExcusasPorEmpleado(@PathVariable int legajo) {
+        long count = excusaService.contarExcusasPorEmpleado(legajo);
+        return ResponseEntity.ok(count);
     }
 
-    @DeleteMapping("/eliminar")
-    public ResponseEntity<Map<String, Object>> eliminarExcusasPorFecha(
-            @RequestParam(required = false) String fechaLimite) {
+    // DTOs para las requests
+    public static class CrearExcusaRequest {
+        private int legajoEmpleado;
+        private String descripcion;
+        private String tipoExcusa;
         
-
-        if (fechaLimite == null || fechaLimite.trim().isEmpty()) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "El parámetro 'fechaLimite' es obligatorio");
-            error.put("mensaje", "Para proteger contra eliminaciones accidentales, debe proporcionar una fecha límite");
-            return ResponseEntity.badRequest().body(error);
-        }
-
-        try {
-            int excusasEliminadas = excusaService.eliminarExcusasAnterioresA(fechaLimite);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("excusasEliminadas", excusasEliminadas);
-            response.put("fechaLimite", fechaLimite);
-            response.put("mensaje", "Operación completada exitosamente");
-            
-            return ResponseEntity.ok(response);
-        } catch (IllegalArgumentException e) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "Formato de fecha inválido");
-            error.put("mensaje", "Use el formato YYYY-MM-DD para la fecha");
-            return ResponseEntity.badRequest().body(error);
-        }
+        public int getLegajoEmpleado() { return legajoEmpleado; }
+        public void setLegajoEmpleado(int legajoEmpleado) { this.legajoEmpleado = legajoEmpleado; }
+        
+        public String getDescripcion() { return descripcion; }
+        public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+        
+        public String getTipoExcusa() { return tipoExcusa; }
+        public void setTipoExcusa(String tipoExcusa) { this.tipoExcusa = tipoExcusa; }
     }
-} 
+
+    public static class ActualizarEstadoRequest {
+        private String estado;
+        
+        public String getEstado() { return estado; }
+        public void setEstado(String estado) { this.estado = estado; }
+    }
+}

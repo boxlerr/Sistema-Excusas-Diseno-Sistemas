@@ -1,51 +1,81 @@
 package com.empresa.excusas.service;
 
+import com.empresa.excusas.model.EmpleadoExcusador;
+import com.empresa.excusas.repository.EmpleadoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class EmpleadoService {
-    private final List<EmpleadoDTO> empleados = new ArrayList<>();
-    private int nextLegajo = 1000;
 
-    public List<EmpleadoDTO> getAll() {
-        return empleados;
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
+
+    public List<EmpleadoExcusador> obtenerTodosLosEmpleados() {
+        return empleadoRepository.findAll();
     }
 
-    public EmpleadoDTO create(EmpleadoDTO dto) {
-        if (dto.getNombre() == null || dto.getEmail() == null) {
-            throw new IllegalArgumentException("Nombre y email son obligatorios");
+    public EmpleadoExcusador crearEmpleado(String nombre, String email, int legajo) {
+        // Validar que no exista el legajo
+        if (empleadoRepository.existsByLegajo(legajo)) {
+            throw new IllegalArgumentException("Ya existe un empleado con legajo: " + legajo);
         }
-        dto.setLegajo(nextLegajo++);
-        empleados.add(dto);
-        return dto;
-    }
-
-    public Optional<EmpleadoDTO> getByLegajo(int legajo) {
-        return empleados.stream().filter(e -> e.getLegajo() == legajo).findFirst();
-    }
-
-    // DTO interno para la iteración 2
-    public static class EmpleadoDTO {
-        @NotBlank(message = "El nombre es obligatorio")
-        private String nombre;
-        @NotBlank(message = "El email es obligatorio")
-        @Email(message = "El email debe ser válido")
-        private String email;
-        private int legajo;
-        public EmpleadoDTO() {}
-        public EmpleadoDTO(String nombre, String email, int legajo) {
-            this.nombre = nombre;
-            this.email = email;
-            this.legajo = legajo;
+        
+        // Validar que no exista el email
+        if (empleadoRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Ya existe un empleado con email: " + email);
         }
-        public String getNombre() { return nombre; }
-        public void setNombre(String nombre) { this.nombre = nombre; }
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-        public int getLegajo() { return legajo; }
-        public void setLegajo(int legajo) { this.legajo = legajo; }
+
+        EmpleadoExcusador empleado = new EmpleadoExcusador(nombre, email, legajo);
+        return empleadoRepository.save(empleado);
     }
-} 
+
+    @Transactional(readOnly = true)
+    public Optional<EmpleadoExcusador> obtenerEmpleadoPorLegajo(int legajo) {
+        return empleadoRepository.findByLegajo(legajo);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<EmpleadoExcusador> obtenerEmpleadoPorId(Long id) {
+        return empleadoRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<EmpleadoExcusador> obtenerEmpleadoPorEmail(String email) {
+        return empleadoRepository.findByEmail(email);
+    }
+
+    public EmpleadoExcusador actualizarEmpleado(Long id, String nombre, String email) {
+        Optional<EmpleadoExcusador> empleadoOpt = empleadoRepository.findById(id);
+        if (empleadoOpt.isPresent()) {
+            EmpleadoExcusador empleado = empleadoOpt.get();
+            
+            // Validar email único si cambió
+            if (!empleado.getEmail().equals(email) && empleadoRepository.existsByEmail(email)) {
+                throw new IllegalArgumentException("Ya existe un empleado con email: " + email);
+            }
+            
+            empleado.setNombre(nombre);
+            empleado.setEmail(email);
+            return empleadoRepository.save(empleado);
+        }
+        throw new IllegalArgumentException("Empleado no encontrado con ID: " + id);
+    }
+
+    public void eliminarEmpleado(Long id) {
+        if (!empleadoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Empleado no encontrado con ID: " + id);
+        }
+        empleadoRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EmpleadoExcusador> buscarPorNombre(String nombre) {
+        return empleadoRepository.findByNombreContaining(nombre);
+    }
+}

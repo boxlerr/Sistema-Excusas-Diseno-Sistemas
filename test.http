@@ -1,8 +1,11 @@
-POST http://localhost:8080/empleados
-    Content-Type: application/json
 
-   {
-     "nombre": "Juancito Perez Vintage",
-     "email": "juanceto01@vaxler.com"
-   }
-   GET http://localhost:8080/empleados
+POST http://localhost:8080/api/empleados
+Content-Type: application/json
+
+{
+  "nombre": "Juancito Perez Vintage",
+  "email": "juanceto01@vaxler.com",
+  "legajo": 1001
+}
+
+GET http://localhost:8080/api/empleados

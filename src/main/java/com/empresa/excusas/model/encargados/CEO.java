@@ -20,38 +20,22 @@ public class CEO extends EncargadoBase implements ObserverProntuario {
     @Override
     public boolean puedeManejar(Excusa excusa) {
         // Solo acepta excusas EXTREMADAMENTE inverosímiles
-        return excusa.getTipoExcusa() instanceof ExcusaInverosimil;
+        return "INVEROSIMIL".equalsIgnoreCase(excusa.getTipoExcusa());
     }
 
     @Override
     public void procesar(Excusa excusa) {
-        System.out.println("🎩 " + this.getNombre() + " (CEO) procesando excusa extremadamente inverosímil: " + excusa.getTipoExcusa().getDescripcion());
-        modoOperacion();
-
-        // Usar los métodos de la excusa (Tell, Don't Ask)
-        ExcusaInverosimil excusaInverosimil = (ExcusaInverosimil) excusa.getTipoExcusa();
-        excusaInverosimil.procesarExcusaInverosimil();
-        excusaInverosimil.registrarRechazo();
-
-        // EXACTAMENTE como dice la consigna: "Aprobado por creatividad"
+        System.out.println(getNombre() + " (CEO) procesando excusa extremadamente inverosímil: " + excusa.getTipoExcusa() + " - " + excusa.getDescripcion());
+        // Aquí podrías agregar lógica adicional si lo deseas
+        // Por ejemplo, marcar la excusa como aprobada automáticamente
+        excusa.setEstado("APROBADA POR CREATIVIDAD");
         EmailSender emailSender = new ServicioEmail();
         emailSender.enviarEmail(
-                excusa.getEmpleado().getEmail(),
-                this.getEmail(),
-                "Motivo demora",
-                "Aprobado por creatividad"
+            excusa.getEmpleado().getEmail(),
+            this.getEmail(),
+            "Aprobado por creatividad",
+            "Su excusa ha sido aprobada por creatividad."
         );
-
-        // Crear prontuario con datos del empleado, la excusa y el nro de legajo
-        Prontuario prontuario = new Prontuario(
-                excusa.getEmpleado().getNombre(),
-                excusa.getEmpleado().getEmail(),
-                excusa.getEmpleado().getLegajo(),
-                excusa
-        );
-
-        System.out.println("📋 Iniciando prontuario para el empleado " + excusa.getEmpleado().getNombre() + " (Legajo: " + excusa.getEmpleado().getLegajo() + ")");
-        AdministradorProntuarios.getInstancia().agregarProntuario(prontuario);
     }
 
     @Override

@@ -1,9 +1,16 @@
 package com.empresa.excusas;
 
-import com.empresa.excusas.clases.*;
-import com.empresa.excusas.model.Excusa;
 import com.empresa.excusas.model.clasesAbstractas.Empleado;
-import com.empresa.excusas.model.encargados.*;
+import com.empresa.excusas.model.clasesAbstractas.EncargadoBase;
+import com.empresa.excusas.model.EmpleadoExcusador;
+import com.empresa.excusas.model.encargados.Recepcionista;
+import com.empresa.excusas.model.encargados.SupervisorArea;
+import com.empresa.excusas.model.encargados.GerenteRRHH;
+import com.empresa.excusas.model.encargados.CEO;
+import com.empresa.excusas.model.encargados.EncargadoPorDefecto;
+import com.empresa.excusas.model.Excusa;
+import com.empresa.excusas.model.modoOperacion.ModoNormal;
+import com.empresa.excusas.model.modoOperacion.ModoProductivo;
 import com.empresa.excusas.model.interfaces.IEncargado;
 import com.empresa.excusas.model.interfaces.ModoOperacion;
 import com.empresa.excusas.model.modoOperacion.*;
@@ -35,10 +42,10 @@ public class TestSistema {
         ceo.setSiguiente(encargadoDefecto);
         
         // Crear excusas de diferentes tipos
-        Excusa excusaTrivial = new Excusa(empleado1, "Me quedé dormido", new ExcusaTrivial("Me quedé dormido"));
-        Excusa excusaModerada = new Excusa(empleado1, "Corte de luz en mi casa", new ExcusaModerada("Corte de luz en mi casa"));
-        Excusa excusaCompleja = new Excusa(empleado2, "Me robaron el auto", new ExcusaCompleja("Me robaron el auto"));
-        Excusa excusaInverosimil = new Excusa(empleado2, "Me abdujo un alien", new ExcusaInverosimil("Me abdujo un alien"));
+        Excusa excusaTrivial = new Excusa((EmpleadoExcusador)empleado1, "Excusa trivial", "TRIVIAL");
+        Excusa excusaModerada = new Excusa((EmpleadoExcusador)empleado1, "Excusa moderada", "MODERADA");
+        Excusa excusaCompleja = new Excusa((EmpleadoExcusador)empleado2, "Excusa compleja", "COMPLEJA");
+        Excusa excusaInverosimil = new Excusa((EmpleadoExcusador)empleado2, "Excusa inverosimil", "INVEROSIMIL");
         
         System.out.println("\n=== PRUEBA 1: Excusa Trivial ===");
         recepcionista.manejarExcusa(excusaTrivial);

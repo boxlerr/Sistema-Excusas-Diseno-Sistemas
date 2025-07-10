@@ -14,19 +14,14 @@ public class EncargadoPorDefecto extends EncargadoBase {
 
     @Override
     public boolean puedeManejar(Excusa excusa) {
-        return true; // Siempre puede "manejar" para dar la respuesta por defecto
+        // Puede manejar cualquier tipo de excusa
+        return true;
     }
 
     @Override
     public void procesar(Excusa excusa) {
-        System.out.println("❌ " + this.getNombre() + " (Encargado por Defecto): Excusa rechazada: necesitamos pruebas contundentes");
-        
-        EmailSender emailSender = new ServicioEmail();
-        emailSender.enviarEmail(
-                excusa.getEmpleado().getEmail(),
-                this.getEmail(),
-                "Excusa rechazada",
-                "Su excusa ha sido rechazada. Necesitamos pruebas contundentes para su aprobación."
-        );
+        System.out.println(getNombre() + " (Encargado por Defecto) procesando excusa: " + excusa.getTipoExcusa() + " - " + excusa.getDescripcion());
+        excusa.setEstado("EN REVISION");
+        // Aquí podrías agregar lógica adicional si lo deseas
     }
 }

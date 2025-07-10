@@ -1,11 +1,21 @@
 package com.empresa.excusas.model.clasesAbstractas;
 
 import com.empresa.excusas.model.interfaces.IEmpleado;
+import jakarta.persistence.*;
 
+@MappedSuperclass
 public class Empleado implements IEmpleado {
+    
+    @Column(nullable = false)
     private String nombre;
+    
+    @Column(nullable = false)
     private String email;
+    
+    @Column(nullable = false, unique = true)
     private int legajo;
+
+    public Empleado() {}
 
     public Empleado(String nombre, String email, int legajo) {
         this.nombre = nombre;

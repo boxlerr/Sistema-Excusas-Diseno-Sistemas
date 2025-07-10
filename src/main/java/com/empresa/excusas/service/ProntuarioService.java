@@ -1,42 +1,64 @@
 package com.empresa.excusas.service;
 
+import com.empresa.excusas.model.Prontuario;
+import com.empresa.excusas.repository.ProntuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class ProntuarioService {
-    private final List<ProntuarioDTO> prontuarios = new ArrayList<>();
-    private int nextId = 1;
 
-    public List<ProntuarioDTO> getAll() {
-        return prontuarios;
+    @Autowired
+    private ProntuarioRepository prontuarioRepository;
+
+    public List<Prontuario> obtenerTodosLosProntuarios() {
+        return prontuarioRepository.findAll();
     }
 
-    public ProntuarioDTO create(ProntuarioDTO dto) {
-        dto.setId(nextId++);
-        prontuarios.add(dto);
-        return dto;
+    public Prontuario crearProntuario(Prontuario prontuario) {
+        return prontuarioRepository.save(prontuario);
     }
 
-    // DTO interno para la iteración 2
-    public static class ProntuarioDTO {
-        private int id;
-        @Min(value = 1, message = "El legajo del empleado debe ser mayor a 0")
-        private int empleadoLegajo;
-        @NotBlank(message = "El motivo es obligatorio")
-        private String motivo;
-        @NotBlank(message = "La fecha es obligatoria")
-        private String fecha;
-        public ProntuarioDTO() {}
-        public int getId() { return id; }
-        public void setId(int id) { this.id = id; }
-        public int getEmpleadoLegajo() { return empleadoLegajo; }
-        public void setEmpleadoLegajo(int empleadoLegajo) { this.empleadoLegajo = empleadoLegajo; }
-        public String getMotivo() { return motivo; }
-        public void setMotivo(String motivo) { this.motivo = motivo; }
-        public String getFecha() { return fecha; }
-        public void setFecha(String fecha) { this.fecha = fecha; }
+    @Transactional(readOnly = true)
+    public Optional<Prontuario> obtenerProntuarioPorId(Long id) {
+        return prontuarioRepository.findById(id);
     }
-} 
+
+    @Transactional(readOnly = true)
+    public List<Prontuario> obtenerProntuariosPorLegajo(int legajo) {
+        return prontuarioRepository.findByLegajoEmpleado(legajo);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Prontuario> obtenerProntuariosPorEmail(String email) {
+        return prontuarioRepository.findByEmailEmpleado(email);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Prontuario> obtenerProntuariosPorFecha(LocalDateTime inicio, LocalDateTime fin) {
+        return prontuarioRepository.findByFechaCreacionBetween(inicio, fin);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Prontuario> buscarPorNombreEmpleado(String nombre) {
+        return prontuarioRepository.findByNombreEmpleadoContaining(nombre);
+    }
+
+    @Transactional(readOnly = true)
+    public long contarProntuariosPorLegajo(int legajo) {
+        return prontuarioRepository.countByLegajoEmpleado(legajo);
+    }
+
+    public void eliminarProntuario(Long id) {
+        if (!prontuarioRepository.existsById(id)) {
+            throw new IllegalArgumentException("Prontuario no encontrado con ID: " + id);
+        }
+        prontuarioRepository.deleteById(id);
+    }
+}

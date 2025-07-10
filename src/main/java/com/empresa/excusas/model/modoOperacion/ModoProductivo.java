@@ -35,7 +35,7 @@ public class ModoProductivo implements ModoOperacion {
                 encargado.getEmail(),
                 "Excusa recibida",
                 "Se ha recibido una excusa de " + excusa.getEmpleado().getNombre() +
-                        " con el motivo: " + excusa.getTipoExcusa().getDescripcion()
+                        " con el motivo: " + excusa.getTipoExcusa()
         );
     }
 }
