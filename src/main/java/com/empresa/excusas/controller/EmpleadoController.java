@@ -19,8 +19,9 @@ public class EmpleadoController {
     }
 
     @GetMapping
-    public List<EmpleadoService.EmpleadoDTO> getAll() {
-        return empleadoService.getAll();
+    public ResponseEntity<List<EmpleadoService.EmpleadoDTO>> getAll() {
+        List<EmpleadoService.EmpleadoDTO> empleados = empleadoService.getAll();
+        return ResponseEntity.ok(empleados);
     }
 
     @PostMapping

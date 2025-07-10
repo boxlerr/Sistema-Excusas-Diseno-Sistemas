@@ -5,6 +5,7 @@ import java.util.*;
 import com.empresa.excusas.clases.service.EncargadoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/encargados")
@@ -17,17 +18,20 @@ public class EncargadoController {
     }
 
     @GetMapping
-    public List<EncargadoService.EncargadoDTO> getAll() {
-        return encargadoService.getAll();
+    public ResponseEntity<List<EncargadoService.EncargadoDTO>> getAll() {
+        List<EncargadoService.EncargadoDTO> encargados = encargadoService.getAll();
+        return ResponseEntity.ok(encargados);
     }
 
     @PostMapping
-    public EncargadoService.EncargadoDTO create(@Valid @RequestBody EncargadoService.EncargadoDTO dto) {
-        return encargadoService.create(dto);
+    public ResponseEntity<EncargadoService.EncargadoDTO> create(@Valid @RequestBody EncargadoService.EncargadoDTO dto) {
+        EncargadoService.EncargadoDTO creado = encargadoService.create(dto);
+        return ResponseEntity.status(201).body(creado);
     }
 
     @PutMapping("/modo")
-    public EncargadoService.EncargadoDTO cambiarModo(@RequestParam int legajo, @RequestParam String modo) {
-        return encargadoService.cambiarModo(legajo, modo);
+    public ResponseEntity<EncargadoService.EncargadoDTO> cambiarModo(@RequestParam int legajo, @RequestParam String modo) {
+        EncargadoService.EncargadoDTO actualizado = encargadoService.cambiarModo(legajo, modo);
+        return ResponseEntity.ok(actualizado);
     }
 } 
