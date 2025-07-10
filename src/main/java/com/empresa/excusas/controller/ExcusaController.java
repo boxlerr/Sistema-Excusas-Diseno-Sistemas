@@ -38,12 +38,6 @@ public class ExcusaController {
         }
     }
 
-    @GetMapping("/{legajo}")
-    public List<ExcusaService.ExcusaDTO> getByLegajo(@PathVariable int legajo) {
-        return excusaService.getByLegajo(legajo);
-    }
-
-
     @GetMapping("/busqueda")
     public ResponseEntity<List<ExcusaService.ExcusaDTO>> buscarExcusas(
             @RequestParam int legajo,

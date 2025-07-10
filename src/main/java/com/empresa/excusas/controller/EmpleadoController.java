@@ -32,8 +32,8 @@ public class EmpleadoController {
         }
     }
 
-    @GetMapping("/{legajo}")
-    public ResponseEntity<EmpleadoService.EmpleadoDTO> getByLegajo(@PathVariable int legajo) {
+    @GetMapping
+    public ResponseEntity<EmpleadoService.EmpleadoDTO> getByLegajo(@RequestParam int legajo) {
         return empleadoService.getByLegajo(legajo)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
