@@ -1,8 +1,11 @@
 package com.empresa.excusas.controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import com.empresa.excusas.service.EncargadoService;
+
 import java.util.*;
-import com.empresa.excusas.clases.service.EncargadoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

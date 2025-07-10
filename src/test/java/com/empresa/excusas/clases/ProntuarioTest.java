@@ -1,7 +1,10 @@
 package com.empresa.excusas.clases;
 
-import com.empresa.excusas.clases.tiposExcusas.ExcusaInverosimil;
-import com.empresa.excusas.clasesAbstractas.Empleado;
+import com.empresa.excusas.model.Excusa;
+import com.empresa.excusas.model.Prontuario;
+import com.empresa.excusas.model.clasesAbstractas.Empleado;
+import com.empresa.excusas.model.tiposExcusas.ExcusaInverosimil;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;

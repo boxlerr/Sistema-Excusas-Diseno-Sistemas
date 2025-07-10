@@ -1,11 +1,13 @@
 package com.empresa.excusas.clases.encargados;
 
-import com.empresa.excusas.clases.Excusa;
-import com.empresa.excusas.clases.modoOperacion.ModoNormal;
-import com.empresa.excusas.clases.modoOperacion.ModoVago;
-import com.empresa.excusas.clases.tiposExcusas.ExcusaCompleja;
-import com.empresa.excusas.clases.tiposExcusas.ExcusaModerada;
-import com.empresa.excusas.clasesAbstractas.Empleado;
+import com.empresa.excusas.model.Excusa;
+import com.empresa.excusas.model.clasesAbstractas.Empleado;
+import com.empresa.excusas.model.encargados.GerenteRRHH;
+import com.empresa.excusas.model.modoOperacion.ModoNormal;
+import com.empresa.excusas.model.modoOperacion.ModoVago;
+import com.empresa.excusas.model.tiposExcusas.ExcusaCompleja;
+import com.empresa.excusas.model.tiposExcusas.ExcusaModerada;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;

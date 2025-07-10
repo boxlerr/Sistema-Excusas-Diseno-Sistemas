@@ -1,12 +1,13 @@
 package com.empresa.excusas;
 
 import com.empresa.excusas.clases.*;
-import com.empresa.excusas.clases.encargados.*;
-import com.empresa.excusas.clases.modoOperacion.*;
-import com.empresa.excusas.clases.tiposExcusas.*;
-import com.empresa.excusas.clasesAbstractas.Empleado;
-import com.empresa.excusas.interfaces.IEncargado;
-import com.empresa.excusas.interfaces.ModoOperacion;
+import com.empresa.excusas.model.Excusa;
+import com.empresa.excusas.model.clasesAbstractas.Empleado;
+import com.empresa.excusas.model.encargados.*;
+import com.empresa.excusas.model.interfaces.IEncargado;
+import com.empresa.excusas.model.interfaces.ModoOperacion;
+import com.empresa.excusas.model.modoOperacion.*;
+import com.empresa.excusas.model.tiposExcusas.*;
 
 public class TestSistema {
     public static void main(String[] args) {

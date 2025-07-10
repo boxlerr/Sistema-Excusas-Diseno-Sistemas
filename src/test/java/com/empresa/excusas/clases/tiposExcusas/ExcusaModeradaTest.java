@@ -1,7 +1,9 @@
 package com.empresa.excusas.clases.tiposExcusas;
 
-import com.empresa.excusas.clases.tiposExcusas.ExcusaModerada;
 import org.junit.jupiter.api.Test;
+
+import com.empresa.excusas.model.tiposExcusas.ExcusaModerada;
+
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 

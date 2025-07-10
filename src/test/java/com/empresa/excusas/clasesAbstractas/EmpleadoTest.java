@@ -1,7 +1,9 @@
 package com.empresa.excusas.clasesAbstractas;
 
-import com.empresa.excusas.clasesAbstractas.Empleado;
 import org.junit.jupiter.api.Test;
+
+import com.empresa.excusas.model.clasesAbstractas.Empleado;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;

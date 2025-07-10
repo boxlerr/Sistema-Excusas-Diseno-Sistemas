@@ -1,10 +1,12 @@
 package com.empresa.excusas.controller;
 
-import com.empresa.excusas.clases.service.ExcusaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.empresa.excusas.service.ExcusaService;
+
 import java.time.LocalDate;
 import java.util.*;
 import jakarta.validation.Valid;

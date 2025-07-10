@@ -1,6 +1,9 @@
 package com.empresa.excusas.clases.tiposExcusas;
 
 import org.junit.jupiter.api.Test;
+
+import com.empresa.excusas.model.tiposExcusas.ExcusaInverosimil;
+
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 

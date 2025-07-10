@@ -1,8 +1,10 @@
 package com.empresa.excusas.controller;
 
-import com.empresa.excusas.clases.service.ProntuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import com.empresa.excusas.service.ProntuarioService;
+
 import java.util.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

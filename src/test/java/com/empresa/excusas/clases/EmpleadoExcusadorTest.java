@@ -1,6 +1,9 @@
 package com.empresa.excusas.clases;
 
 import org.junit.jupiter.api.Test;
+
+import com.empresa.excusas.model.EmpleadoExcusador;
+
 import org.junit.jupiter.api.DisplayName;
 import static org.junit.jupiter.api.Assertions.*;
 
