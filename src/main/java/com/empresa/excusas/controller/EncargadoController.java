@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import com.empresa.excusas.clases.service.EncargadoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/encargados")
@@ -21,7 +22,7 @@ public class EncargadoController {
     }
 
     @PostMapping
-    public EncargadoService.EncargadoDTO create(@RequestBody EncargadoService.EncargadoDTO dto) {
+    public EncargadoService.EncargadoDTO create(@Valid @RequestBody EncargadoService.EncargadoDTO dto) {
         return encargadoService.create(dto);
     }
 

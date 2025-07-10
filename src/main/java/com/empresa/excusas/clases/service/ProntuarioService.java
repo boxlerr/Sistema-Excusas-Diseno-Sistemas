@@ -2,6 +2,8 @@ package com.empresa.excusas.clases.service;
 
 import org.springframework.stereotype.Service;
 import java.util.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Service
 public class ProntuarioService {
@@ -21,8 +23,11 @@ public class ProntuarioService {
     // DTO interno para la iteración 2
     public static class ProntuarioDTO {
         private int id;
+        @Min(value = 1, message = "El legajo del empleado debe ser mayor a 0")
         private int empleadoLegajo;
+        @NotBlank(message = "El motivo es obligatorio")
         private String motivo;
+        @NotBlank(message = "La fecha es obligatoria")
         private String fecha;
         public ProntuarioDTO() {}
         public int getId() { return id; }

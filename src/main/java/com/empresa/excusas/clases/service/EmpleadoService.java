@@ -2,6 +2,8 @@ package com.empresa.excusas.clases.service;
 
 import org.springframework.stereotype.Service;
 import java.util.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Service
 public class EmpleadoService {
@@ -27,7 +29,10 @@ public class EmpleadoService {
 
     // DTO interno para la iteración 2
     public static class EmpleadoDTO {
+        @NotBlank(message = "El nombre es obligatorio")
         private String nombre;
+        @NotBlank(message = "El email es obligatorio")
+        @Email(message = "El email debe ser válido")
         private String email;
         private int legajo;
         public EmpleadoDTO() {}

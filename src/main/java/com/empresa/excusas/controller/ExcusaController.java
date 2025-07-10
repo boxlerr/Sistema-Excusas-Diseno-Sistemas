@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/excusas")
@@ -29,7 +30,7 @@ public class ExcusaController {
     }
 
     @PostMapping
-    public ResponseEntity<ExcusaService.ExcusaDTO> create(@RequestBody ExcusaService.ExcusaDTO dto) {
+    public ResponseEntity<ExcusaService.ExcusaDTO> create(@Valid @RequestBody ExcusaService.ExcusaDTO dto) {
         try {
             ExcusaService.ExcusaDTO creada = excusaService.create(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(creada);

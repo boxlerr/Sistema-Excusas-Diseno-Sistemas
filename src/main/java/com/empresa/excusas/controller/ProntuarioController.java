@@ -4,6 +4,7 @@ import com.empresa.excusas.clases.service.ProntuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/prontuarios")
@@ -21,7 +22,7 @@ public class ProntuarioController {
     }
 
     @PostMapping
-    public ProntuarioService.ProntuarioDTO create(@RequestBody ProntuarioService.ProntuarioDTO dto) {
+    public ProntuarioService.ProntuarioDTO create(@Valid @RequestBody ProntuarioService.ProntuarioDTO dto) {
         return prontuarioService.create(dto);
     }
 } 

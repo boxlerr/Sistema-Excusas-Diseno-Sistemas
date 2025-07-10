@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Service
 public class ExcusaService {
@@ -168,7 +170,9 @@ public class ExcusaService {
     
     public static class ExcusaDTO {
         private int id;
+        @Min(value = 1, message = "El legajo del empleado debe ser mayor a 0")
         private int empleadoLegajo;
+        @NotBlank(message = "El motivo es obligatorio")
         private String motivo;
         private String estado;
         private String fecha;

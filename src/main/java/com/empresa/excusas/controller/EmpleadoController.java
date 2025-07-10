@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/empleados")
@@ -23,7 +24,7 @@ public class EmpleadoController {
     }
 
     @PostMapping
-    public ResponseEntity<EmpleadoService.EmpleadoDTO> create(@RequestBody EmpleadoService.EmpleadoDTO dto) {
+    public ResponseEntity<EmpleadoService.EmpleadoDTO> create(@Valid @RequestBody EmpleadoService.EmpleadoDTO dto) {
         try {
             EmpleadoService.EmpleadoDTO creado = empleadoService.create(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(creado);
