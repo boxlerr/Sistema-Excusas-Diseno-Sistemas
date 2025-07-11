@@ -19,15 +19,15 @@ public class EmpleadoControllerIntegrationTest {
     @Test
     void crearYListarEmpleados() throws Exception {
         // Crear empleado
-        mockMvc.perform(post("/empleados")
+        mockMvc.perform(post("/api/empleados")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"nombre\":\"Juan Perez\",\"email\":\"juan@empresa.com\"}"))
+                .content("{\"nombre\":\"Juan Perez\",\"email\":\"testunique@empresa.com\",\"legajo\":99999}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.nombre").value("Juan Perez"));
 
         // Listar empleados
-        mockMvc.perform(get("/empleados"))
+        mockMvc.perform(get("/api/empleados"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].nombre").value("Juan Perez"));
+                .andExpect(jsonPath("$[*].nombre").value(org.hamcrest.Matchers.hasItem("Juan Perez")));
     }
 } 

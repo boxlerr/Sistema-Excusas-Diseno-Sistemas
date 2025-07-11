@@ -27,16 +27,12 @@ public class ExcusaController {
 
     @PostMapping
     public ResponseEntity<Excusa> crearExcusa(@RequestBody CrearExcusaRequest request) {
-        try {
-            Excusa excusa = excusaService.crearExcusa(
-                request.getLegajoEmpleado(), 
-                request.getDescripcion(), 
-                request.getTipoExcusa()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body(excusa);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        Excusa excusa = excusaService.crearExcusa(
+            request.getLegajoEmpleado(), 
+            request.getDescripcion(), 
+            request.getTipoExcusa()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(excusa);
     }
 
     @GetMapping("/empleado/{legajo}")
@@ -79,6 +75,15 @@ public class ExcusaController {
     public ResponseEntity<Long> contarExcusasPorEmpleado(@PathVariable int legajo) {
         long count = excusaService.contarExcusasPorEmpleado(legajo);
         return ResponseEntity.ok(count);
+    }
+
+    @DeleteMapping("/eliminar")
+    public ResponseEntity<String> eliminarExcusasPorFecha(@RequestParam(name = "fechaLimite", required = false) String fechaLimite) {
+        if (fechaLimite == null || fechaLimite.isBlank()) {
+            throw new IllegalArgumentException("Debe proporcionar fechaLimite");
+        }
+        // Aquí iría la lógica real de eliminación, por ahora solo un mensaje de ejemplo
+        return ResponseEntity.ok("Eliminación simulada para fechaLimite: " + fechaLimite);
     }
 
     // DTOs para las requests

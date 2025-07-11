@@ -1,10 +1,12 @@
 package com.empresa.excusas.model;
 
 import com.empresa.excusas.model.clasesAbstractas.Empleado;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "empleados")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EmpleadoExcusador extends Empleado {
     
     @Id

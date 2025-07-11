@@ -1,9 +1,11 @@
 package com.empresa.excusas.model;
 
 import com.empresa.excusas.model.clasesAbstractas.ExcusaBase;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "excusas")
 public class Excusa extends ExcusaBase {

@@ -26,16 +26,12 @@ public class EmpleadoController {
 
     @PostMapping
     public ResponseEntity<EmpleadoExcusador> crearEmpleado(@RequestBody CrearEmpleadoRequest request) {
-        try {
-            EmpleadoExcusador empleado = empleadoService.crearEmpleado(
-                request.getNombre(), 
-                request.getEmail(), 
-                request.getLegajo()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).body(empleado);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        EmpleadoExcusador empleado = empleadoService.crearEmpleado(
+            request.getNombre(), 
+            request.getEmail(), 
+            request.getLegajo()
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(empleado);
     }
 
     @GetMapping("/{legajo}")

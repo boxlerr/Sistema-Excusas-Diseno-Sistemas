@@ -3,9 +3,9 @@ package com.empresa.excusas.model.encargados;
 import com.empresa.excusas.model.Excusa;
 import com.empresa.excusas.model.ServicioEmail;
 import com.empresa.excusas.model.clasesAbstractas.EncargadoBase;
+import com.empresa.excusas.model.clasesAbstractas.TipoExcusa;
 import com.empresa.excusas.model.interfaces.EmailSender;
 import com.empresa.excusas.model.interfaces.ModoOperacion;
-import com.empresa.excusas.model.tiposExcusas.ExcusaCompleja;
 
 public class GerenteRRHH extends EncargadoBase {
 
@@ -16,7 +16,7 @@ public class GerenteRRHH extends EncargadoBase {
     @Override
     public boolean puedeManejar(Excusa excusa) {
         // Solo acepta excusas MODERADAS
-        return "MODERADA".equalsIgnoreCase(excusa.getTipoExcusa());
+        return TipoExcusa.MODERADA.name().equalsIgnoreCase(excusa.getTipoExcusa());
     }
 
     @Override

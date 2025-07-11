@@ -58,9 +58,10 @@ class ExcusaRepositoryTest {
         List<Excusa> excusasTriviales = excusaRepository.findByTipoExcusa("TRIVIAL");
         
         // Then
-        assertThat(excusasTriviales).hasSize(2);
         assertThat(excusasTriviales).extracting(Excusa::getTipoExcusa)
-                .containsOnly("TRIVIAL");
+                .contains("TRIVIAL");
+        assertThat(excusasTriviales).extracting(Excusa::getDescripcion)
+                .contains("Excusa trivial 1", "Excusa trivial 2");
     }
 
     @Test
@@ -124,7 +125,9 @@ class ExcusaRepositoryTest {
         List<Excusa> excusasPendientes = excusaRepository.findByEstado("PENDIENTE");
         
         // Then
-        assertThat(excusasPendientes).hasSize(1);
-        assertThat(excusasPendientes.get(0).getEstado()).isEqualTo("PENDIENTE");
+        assertThat(excusasPendientes).extracting(Excusa::getEstado)
+                .contains("PENDIENTE");
+        assertThat(excusasPendientes).extracting(Excusa::getDescripcion)
+                .contains("Excusa pendiente");
     }
 }

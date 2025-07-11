@@ -19,15 +19,15 @@ public class ExcusaControllerIntegrationTest {
     @Test
     void crearYListarExcusas() throws Exception {
         // Crear excusa
-        mockMvc.perform(post("/excusas")
+        mockMvc.perform(post("/api/excusas")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"empleadoLegajo\":1001,\"motivo\":\"Me quede dormido\"}"))
+                .content("{\"legajoEmpleado\":1001,\"descripcion\":\"Me quede dormido\",\"tipoExcusa\":\"TRIVIAL\"}"))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.motivo").value("Me quede dormido"));
+                .andExpect(jsonPath("$.descripcion").value("Me quede dormido"));
 
         // Listar excusas
-        mockMvc.perform(get("/excusas"))
+        mockMvc.perform(get("/api/excusas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].motivo").value("Me quede dormido"));
+                .andExpect(jsonPath("$[*].descripcion").value(org.hamcrest.Matchers.hasItem("Me quede dormido")));
     }
 } 

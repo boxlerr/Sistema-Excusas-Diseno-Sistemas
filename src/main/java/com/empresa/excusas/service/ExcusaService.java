@@ -3,6 +3,7 @@ package com.empresa.excusas.service;
 import com.empresa.excusas.model.Excusa;
 import com.empresa.excusas.model.EmpleadoExcusador;
 import com.empresa.excusas.model.clasesAbstractas.EncargadoBase;
+import com.empresa.excusas.model.clasesAbstractas.TipoExcusa;
 import com.empresa.excusas.repository.ExcusaRepository;
 import com.empresa.excusas.repository.EmpleadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ public class ExcusaService {
     }
 
     public Excusa crearExcusa(int legajoEmpleado, String descripcion, String tipoExcusa) {
+        // Validar tipo de excusa
+        if (!TipoExcusa.isValid(tipoExcusa)) {
+            throw new IllegalArgumentException("Tipo de excusa inválido: " + tipoExcusa);
+        }
         // Buscar el empleado
         Optional<EmpleadoExcusador> empleadoOpt = empleadoRepository.findByLegajo(legajoEmpleado);
         if (!empleadoOpt.isPresent()) {
@@ -40,7 +45,7 @@ public class ExcusaService {
         EmpleadoExcusador empleado = empleadoOpt.get();
         
         // Crear la excusa
-        Excusa excusa = new Excusa(empleado, descripcion, tipoExcusa);
+        Excusa excusa = new Excusa(empleado, descripcion, tipoExcusa.toUpperCase());
         
         // Guardar en base de datos
         Excusa excusaGuardada = excusaRepository.save(excusa);

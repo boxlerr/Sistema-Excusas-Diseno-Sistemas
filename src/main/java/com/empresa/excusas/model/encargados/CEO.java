@@ -5,10 +5,10 @@ import com.empresa.excusas.model.Excusa;
 import com.empresa.excusas.model.Prontuario;
 import com.empresa.excusas.model.ServicioEmail;
 import com.empresa.excusas.model.clasesAbstractas.EncargadoBase;
+import com.empresa.excusas.model.clasesAbstractas.TipoExcusa;
 import com.empresa.excusas.model.interfaces.EmailSender;
 import com.empresa.excusas.model.interfaces.ModoOperacion;
 import com.empresa.excusas.model.interfaces.ObserverProntuario;
-import com.empresa.excusas.model.tiposExcusas.ExcusaInverosimil;
 
 public class CEO extends EncargadoBase implements ObserverProntuario {
 
@@ -20,7 +20,7 @@ public class CEO extends EncargadoBase implements ObserverProntuario {
     @Override
     public boolean puedeManejar(Excusa excusa) {
         // Solo acepta excusas EXTREMADAMENTE inverosímiles
-        return "INVEROSIMIL".equalsIgnoreCase(excusa.getTipoExcusa());
+        return TipoExcusa.INVEROSIMIL.name().equalsIgnoreCase(excusa.getTipoExcusa());
     }
 
     @Override
