@@ -95,6 +95,33 @@ public class ExcusaService {
         throw new IllegalArgumentException("Excusa no encontrada con ID: " + id);
     }
 
+    // Nuevos métodos para la funcionalidad de filtros por fecha
+    @Transactional(readOnly = true)
+    public List<Excusa> obtenerExcusasPorEmpleadoConFiltrosFecha(int legajo, LocalDateTime fechaDesde, LocalDateTime fechaHasta) {
+        // Validar que al menos uno de los parámetros de fecha esté presente
+        if (fechaDesde == null && fechaHasta == null) {
+            throw new IllegalArgumentException("Debe proporcionar al menos un parámetro de fecha (entre o hasta)");
+        }
+        
+        // Verificar que el empleado existe
+        Optional<EmpleadoExcusador> empleadoOpt = empleadoRepository.findByLegajo(legajo);
+        if (!empleadoOpt.isPresent()) {
+            throw new IllegalArgumentException("Empleado no encontrado con legajo: " + legajo);
+        }
+        
+        // Aplicar filtros según los parámetros proporcionados
+        if (fechaDesde != null && fechaHasta != null) {
+            // Ambos parámetros proporcionados
+            return excusaRepository.findByEmpleadoLegajoAndFechaEntre(legajo, fechaDesde, fechaHasta);
+        } else if (fechaDesde != null) {
+            // Solo fecha desde
+            return excusaRepository.findByEmpleadoLegajoAndFechaDesde(legajo, fechaDesde);
+        } else {
+            // Solo fecha hasta
+            return excusaRepository.findByEmpleadoLegajoAndFechaHasta(legajo, fechaHasta);
+        }
+    }
+
     private void procesarExcusaConCadena(Excusa excusa) {
         // Obtener la cadena de responsabilidad
         // EncargadoBase primerEncargado = encargadoService.crearCadenaDeResponsabilidad();

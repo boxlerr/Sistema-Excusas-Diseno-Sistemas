@@ -1,0 +1,100 @@
+### PRUEBAS BÁSICAS DEL SISTEMA ORIGINAL
+
+### 1. Crear empleado
+POST http://localhost:8080/api/empleados
+Content-Type: application/json
+
+{
+  "nombre": "Juancito Perez Vintage",
+  "email": "juanceto01@vaxler.com",
+  "legajo": 1001
+}
+
+### 2. Listar empleados
+GET http://localhost:8080/api/empleados
+
+### 3. Crear empleado adicional
+POST http://localhost:8080/api/empleados
+Content-Type: application/json
+
+{
+  "nombre": "María García",
+  "email": "maria@empresa.com",
+  "legajo": 1002
+}
+
+---
+
+### PRUEBAS DE LA API EXTENDIDA (NUEVAS FUNCIONALIDADES DEL FINAL)
+
+### 4. Obtener todas las excusas
+GET http://localhost:8080/api/excusas
+
+### 5. Crear excusas de prueba
+POST http://localhost:8080/api/excusas
+Content-Type: application/json
+
+{
+  "legajoEmpleado": 1001,
+  "descripcion": "ME_QUEDE_DORMIDO",
+  "tipoExcusa": "TRIVIAL"
+}
+
+###
+
+POST http://localhost:8080/api/excusas
+Content-Type: application/json
+
+{
+  "legajoEmpleado": 1001,
+  "descripcion": "CUIDADO_FAMILIAR",
+  "tipoExcusa": "MODERADA"
+}
+
+###
+
+POST http://localhost:8080/api/excusas
+Content-Type: application/json
+
+{
+  "legajoEmpleado": 1002,
+  "descripcion": "PROBLEMA_TRANSPORTE",
+  "tipoExcusa": "COMPLEJA"
+}
+
+### 6. Obtener excusas por empleado (método original)
+GET http://localhost:8080/api/excusas/empleado/1001
+
+### 7. NUEVO ENDPOINT: Obtener excusas con filtro "entre" (fecha desde)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00
+
+### 8. NUEVO ENDPOINT: Obtener excusas con filtro "hasta" (fecha hasta)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?hasta=2024-12-31T23:59:59
+
+### 9. NUEVO ENDPOINT: Obtener excusas con ambos filtros (rango completo)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00&hasta=2024-12-31T23:59:59
+
+### 10. NUEVO ENDPOINT: Sin parámetros de fecha (debe dar error)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros
+
+### 11. NUEVO ENDPOINT: Empleado inexistente
+GET http://localhost:8080/api/excusas/empleado/9999/filtros?entre=2024-01-01T00:00:00
+
+### 12. Otras funcionalidades del sistema
+GET http://localhost:8080/api/excusas/empleado/1001/count
+GET http://localhost:8080/api/excusas/tipo/TRIVIAL
+GET http://localhost:8080/api/excusas/estado/PENDIENTE
+
+### 13. Actualizar estado de excusa
+PUT http://localhost:8080/api/excusas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "ACEPTADA"
+}
+
+### 14. Pruebas de prontuarios
+GET http://localhost:8080/api/prontuarios
+
+### 15. Pruebas de encargados
+GET http://localhost:8080/api/encargados 

@@ -4,6 +4,8 @@
 
 Este proyecto implementa una API RESTful para la gestión de excusas de empleados en la empresa ficticia **"Excusas S.A."**. El sistema permite registrar excusas, consultar su estado, ver el historial de prontuarios y administrar la línea de encargados en tiempo real. Se aplican principios SOLID, patrones de diseño y buenas prácticas de arquitectura.
 
+**🎯 NUEVO: Versión Final con Sistema de Auditoría y API Extendida**
+
 ---
 
 ## 🎯 Funcionalidades Principales
@@ -18,6 +20,19 @@ Este proyecto implementa una API RESTful para la gestión de excusas de empleado
 - **Persistencia en H2/JPA:** Empleados, excusas y prontuarios.
 - **Tests automáticos:** Validación de casos de éxito y error.
 
+### 🆕 Nuevas Funcionalidades del Final
+
+#### Parte A - Sistema de Auditoría
+- **Patrón Decorator:** Extensión de comportamiento sin modificar código existente
+- **Logs de Auditoría:** Registro automático de procesamiento de excusas
+- **Factory Pattern:** Creación simplificada de encargados con auditoría
+- **Principio Abierto/Cerrado:** Código extensible sin modificar clases existentes
+
+#### Parte B - Extensión de API
+- **Nuevo Endpoint:** Filtros de fecha opcionales para búsqueda de excusas
+- **Validaciones:** Manejo robusto de errores y parámetros
+- **Flexibilidad:** Parámetros opcionales para diferentes casos de uso
+
 ---
 
 ## 🏗️ Arquitectura
@@ -28,6 +43,16 @@ Este proyecto implementa una API RESTful para la gestión de excusas de empleado
 - **Repositorios:** Acceso a datos con JPA.
 - **DTOs:** Entrada y salida de datos.
 - **Manejo de errores:** `GlobalExceptionHandler` y `ApiError`.
+
+### 🆕 Nuevos Componentes de Auditoría
+
+```
+IEncargado (Interface)
+├── EncargadoBase (clases existentes)
+└── EncargadoConAuditoria (decorador)
+    ├── envuelve cualquier IEncargado
+    └── agrega funcionalidad de auditoría
+```
 
 ---
 
@@ -45,6 +70,23 @@ Este proyecto implementa una API RESTful para la gestión de excusas de empleado
 | GET    | `/api/encargados`                            | Listar la configuración actual de la línea de encargados                    |
 | POST   | `/api/encargados`                            | Agregar un nuevo encargado dinámicamente                                    |
 | PUT    | `/api/encargados/{legajo}/modo`              | Cambiar el modo de evaluación de un encargado                               |
+
+### 🆕 Nuevo Endpoint con Filtros de Fecha
+
+| Método | Endpoint                                      | Descripción                                                                 |
+|--------|-----------------------------------------------|-----------------------------------------------------------------------------|
+| GET    | `/api/excusas/empleado/{legajo}/filtros`     | Listar excusas de un empleado con filtros de fecha opcionales               |
+
+**Parámetros:**
+- `legajo` (path): ID del empleado (requerido)
+- `entre` (query): Fecha desde (opcional, formato ISO)
+- `hasta` (query): Fecha hasta (opcional, formato ISO)
+
+**Comportamiento:**
+- Si solo se proporciona `entre`: trae excusas posteriores a esa fecha
+- Si solo se proporciona `hasta`: trae excusas anteriores a esa fecha
+- Si se proporcionan ambos: trae excusas en el rango especificado
+- Si no se proporciona ninguno: retorna error indicando que son parámetros necesarios
 
 ---
 
@@ -128,11 +170,33 @@ GET http://localhost:8080/api/empleados/9999
 
 ---
 
+### 🆕 Error: Nuevo endpoint sin parámetros de fecha
+
+**Request:**
+```http
+GET http://localhost:8080/api/excusas/empleado/1001/filtros
+```
+
+**Respuesta:**
+```json
+{
+  "error": "Error en la búsqueda",
+  "message": "Debe proporcionar al menos un parámetro de fecha (entre o hasta)"
+}
+```
+
+---
+
 ## 🧪 Testing
 
 - **JUnit 5** para pruebas unitarias e integrales.
 - Tests de controladores y servicios, incluyendo casos de error.
 - Ejemplo: `ExcusaControllerErrorTest.java` valida respuestas ante datos inválidos.
+
+### 🆕 Nuevas Pruebas de Auditoría
+
+- `TestSistema.java`: Demostración completa del sistema con auditoría
+- `TestAuditoria.java`: Prueba específica del sistema de auditoría
 
 ---
 
@@ -150,7 +214,13 @@ GET http://localhost:8080/api/empleados/9999
 - **Singleton:** Administrador de prontuarios.
 - **Observer:** Notificaciones a CEOs.
 - **Template Method:** Flujo de manejo de excusas.
-- **SOLID, DRY, Tell Don’t Ask:** Arquitectura limpia y desacoplada.
+- **SOLID, DRY, Tell Don't Ask:** Arquitectura limpia y desacoplada.
+
+### 🆕 Nuevos Patrones del Final
+
+- **Decorator:** Sistema de auditoría que extiende comportamiento sin modificar código existente
+- **Factory:** Creación de encargados con auditoría automática
+- **Composición sobre Herencia:** Implementación del sistema de auditoría
 
 ---
 
@@ -160,8 +230,24 @@ GET http://localhost:8080/api/empleados/9999
 src/main/java/com/empresa/excusas/
 ├── controller/      # Controladores REST
 ├── model/           # Entidades, enums, interfaces y clases abstractas
+│   ├── interfaces/  # Interfaces del sistema
+│   └── ...          # Clases de modelo
 ├── repository/      # Repositorios JPA
 ├── service/         # Servicios de negocio
+```
+
+### 🆕 Nuevos Archivos del Final
+
+```
+src/main/java/com/empresa/excusas/
+├── model/
+│   ├── interfaces/
+│   │   └── IAuditoria.java           # Interfaz del sistema de auditoría
+│   ├── AuditoriaService.java         # Implementación del servicio de auditoría
+│   ├── EncargadoConAuditoria.java    # Decorador para auditoría
+│   └── EncargadoFactory.java         # Factory para crear encargados con auditoría
+├── TestSistema.java                  # Prueba completa del sistema
+└── TestAuditoria.java                # Prueba específica de auditoría
 ```
 
 ---
@@ -234,6 +320,46 @@ Content-Type: application/json
 }
 ```
 
+### 🆕 Nuevos Ejemplos de la API Extendida
+
+#### Obtener excusas posteriores a una fecha:
+```http
+GET /api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00
+```
+
+#### Obtener excusas anteriores a una fecha:
+```http
+GET /api/excusas/empleado/1001/filtros?hasta=2024-12-31T23:59:59
+```
+
+#### Obtener excusas en un rango:
+```http
+GET /api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00&hasta=2024-12-31T23:59:59
+```
+
+---
+
+## 🔍 Sistema de Auditoría
+
+### Logs de Auditoría Esperados
+
+Al ejecutar las pruebas del sistema de auditoría, verás logs como:
+
+```
+[AUDITORÍA] Encargado: Recepcionista - Excusa: ME_QUEDE_DORMIDO - Resultado: ACEPTADA
+[AUDITORÍA] Encargado: Supervisor - Excusa: CUIDADO_FAMILIAR - Resultado: DERIVADA
+```
+
+### Cómo Ejecutar las Pruebas de Auditoría
+
+```bash
+# Ejecutar la demostración completa
+java -cp target/classes com.empresa.excusas.TestSistema
+
+# Ejecutar solo la demostración de auditoría
+java -cp target/classes com.empresa.excusas.TestAuditoria
+```
+
 ---
 
 ## ▶️ Cómo correr el proyecto localmente
@@ -265,6 +391,17 @@ Content-Type: application/json
    ```bash
    mvn test
    ```
+
+6. **🆕 Probar las nuevas funcionalidades:**
+   - Usar el archivo `test_api.http` para probar la API extendida
+   - Ejecutar las pruebas de auditoría como se muestra arriba
+
+---
+
+## 📝 Documentación Adicional
+
+- `DOCUMENTACION_DISENO.md`: Explicación detallada de las decisiones de diseño del final
+- `test_api.http`: Ejemplos de uso de la API extendida
 
 ---
 

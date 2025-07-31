@@ -1,0 +1,49 @@
+### Pruebas de la API de Excusas con Filtros de Fecha
+
+### 1. Obtener todas las excusas
+GET http://localhost:8080/api/excusas
+
+### 2. Crear una excusa de prueba
+POST http://localhost:8080/api/excusas
+Content-Type: application/json
+
+{
+  "legajoEmpleado": 1001,
+  "descripcion": "ME_QUEDE_DORMIDO",
+  "tipoExcusa": "TRIVIAL"
+}
+
+### 3. Obtener excusas por empleado (sin filtros de fecha)
+GET http://localhost:8080/api/excusas/empleado/1001
+
+### 4. Obtener excusas por empleado con filtro "entre" (fecha desde)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00
+
+### 5. Obtener excusas por empleado con filtro "hasta" (fecha hasta)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?hasta=2024-12-31T23:59:59
+
+### 6. Obtener excusas por empleado con ambos filtros (rango completo)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros?entre=2024-01-01T00:00:00&hasta=2024-12-31T23:59:59
+
+### 7. Obtener excusas por empleado sin parámetros de fecha (debe dar error)
+GET http://localhost:8080/api/excusas/empleado/1001/filtros
+
+### 8. Obtener excusas por empleado inexistente
+GET http://localhost:8080/api/excusas/empleado/9999/filtros?entre=2024-01-01T00:00:00
+
+### 9. Contar excusas por empleado
+GET http://localhost:8080/api/excusas/empleado/1001/count
+
+### 10. Obtener excusas por tipo
+GET http://localhost:8080/api/excusas/tipo/TRIVIAL
+
+### 11. Obtener excusas por estado
+GET http://localhost:8080/api/excusas/estado/PENDIENTE
+
+### 12. Actualizar estado de una excusa
+PUT http://localhost:8080/api/excusas/1/estado
+Content-Type: application/json
+
+{
+  "estado": "ACEPTADA"
+} 
