@@ -45,6 +45,22 @@ public class ExcusaController {
         return ResponseEntity.ok(excusas);
     }
 
+    // Nuevo endpoint con filtros de fecha opcionales
+    @GetMapping("/empleado/{legajo}/filtros")
+    public ResponseEntity<?> obtenerExcusasPorEmpleadoConFiltros(
+            @PathVariable int legajo,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime entre,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime hasta) {
+        
+        try {
+            List<Excusa> excusas = excusaService.obtenerExcusasPorEmpleadoConFiltrosFecha(legajo, entre, hasta);
+            return ResponseEntity.ok(excusas);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(new ErrorResponse("Error en la búsqueda", e.getMessage()));
+        }
+    }
+
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<Excusa>> obtenerExcusasPorTipo(@PathVariable String tipo) {
         List<Excusa> excusas = excusaService.obtenerExcusasPorTipo(tipo);
@@ -102,5 +118,22 @@ public class ExcusaController {
         
         public String getEstado() { return estado; }
         public void setEstado(String estado) { this.estado = estado; }
+    }
+
+    // DTO para respuestas de error
+    public static class ErrorResponse {
+        private String error;
+        private String message;
+        
+        public ErrorResponse(String error, String message) {
+            this.error = error;
+            this.message = message;
+        }
+        
+        public String getError() { return error; }
+        public void setError(String error) { this.error = error; }
+        
+        public String getMessage() { return message; }
+        public void setMessage(String message) { this.message = message; }
     }
 }

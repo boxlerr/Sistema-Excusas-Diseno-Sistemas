@@ -26,4 +26,14 @@ public interface ExcusaRepository extends JpaRepository<Excusa, Long> {
     
     @Query("SELECT COUNT(e) FROM Excusa e WHERE e.empleado = :empleado")
     long countByEmpleado(@Param("empleado") EmpleadoExcusador empleado);
+    
+    // Nuevos métodos para la funcionalidad de filtros por fecha
+    @Query("SELECT e FROM Excusa e WHERE e.empleado.legajo = :legajo AND e.fechaCreacion >= :fechaDesde")
+    List<Excusa> findByEmpleadoLegajoAndFechaDesde(@Param("legajo") int legajo, @Param("fechaDesde") LocalDateTime fechaDesde);
+    
+    @Query("SELECT e FROM Excusa e WHERE e.empleado.legajo = :legajo AND e.fechaCreacion <= :fechaHasta")
+    List<Excusa> findByEmpleadoLegajoAndFechaHasta(@Param("legajo") int legajo, @Param("fechaHasta") LocalDateTime fechaHasta);
+    
+    @Query("SELECT e FROM Excusa e WHERE e.empleado.legajo = :legajo AND e.fechaCreacion >= :fechaDesde AND e.fechaCreacion <= :fechaHasta")
+    List<Excusa> findByEmpleadoLegajoAndFechaEntre(@Param("legajo") int legajo, @Param("fechaDesde") LocalDateTime fechaDesde, @Param("fechaHasta") LocalDateTime fechaHasta);
 }

@@ -3,11 +3,7 @@ package com.empresa.excusas;
 import com.empresa.excusas.model.clasesAbstractas.Empleado;
 import com.empresa.excusas.model.clasesAbstractas.EncargadoBase;
 import com.empresa.excusas.model.EmpleadoExcusador;
-import com.empresa.excusas.model.encargados.Recepcionista;
-import com.empresa.excusas.model.encargados.SupervisorArea;
-import com.empresa.excusas.model.encargados.GerenteRRHH;
-import com.empresa.excusas.model.encargados.CEO;
-import com.empresa.excusas.model.encargados.EncargadoPorDefecto;
+import com.empresa.excusas.model.EncargadoFactory;
 import com.empresa.excusas.model.Excusa;
 import com.empresa.excusas.model.modoOperacion.ModoNormal;
 import com.empresa.excusas.model.modoOperacion.ModoProductivo;
@@ -18,7 +14,7 @@ import com.empresa.excusas.model.tiposExcusas.*;
 
 public class TestSistema {
     public static void main(String[] args) {
-        System.out.println("🧪 Iniciando pruebas del sistema de excusas...");
+        System.out.println("🧪 Iniciando pruebas del sistema de excusas con auditoría...");
         
         // Crear empleados
         Empleado empleado1 = new Empleado("Juan Pérez", "juan@empresa.com", 1001);
@@ -28,12 +24,15 @@ public class TestSistema {
         ModoOperacion modoNormal = new ModoNormal();
         ModoOperacion modoProductivo = new ModoProductivo();
         
-        // Crear cadena de encargados
-        IEncargado recepcionista = new Recepcionista("Ana López", "ana@empresa.com", 2001, modoNormal);
-        IEncargado supervisor = new SupervisorArea("Carlos Ruiz", "carlos@empresa.com", 2002, modoProductivo);
-        IEncargado gerenteRRHH = new GerenteRRHH("Laura Silva", "laura@empresa.com", 2003, modoNormal);
-        IEncargado ceo = new CEO("Roberto Martínez", "roberto@empresa.com", 2004, modoNormal);
-        IEncargado encargadoDefecto = new EncargadoPorDefecto("Sistema", "sistema@empresa.com", 9999, modoNormal);
+        // Crear factory para encargados con auditoría
+        EncargadoFactory factory = new EncargadoFactory();
+        
+        // Crear cadena de encargados CON AUDITORÍA
+        IEncargado recepcionista = factory.crearRecepcionistaConAuditoria("Ana López", "ana@empresa.com", 2001, modoNormal);
+        IEncargado supervisor = factory.crearSupervisorConAuditoria("Carlos Ruiz", "carlos@empresa.com", 2002, modoProductivo);
+        IEncargado gerenteRRHH = factory.crearGerenteRRHHConAuditoria("Laura Silva", "laura@empresa.com", 2003, modoNormal);
+        IEncargado ceo = factory.crearCEOConAuditoria("Roberto Martínez", "roberto@empresa.com", 2004, modoNormal);
+        IEncargado encargadoDefecto = factory.crearEncargadoPorDefectoConAuditoria("Sistema", "sistema@empresa.com", 9999, modoNormal);
         
         // Configurar cadena de responsabilidad
         recepcionista.setSiguiente(supervisor);
@@ -42,10 +41,10 @@ public class TestSistema {
         ceo.setSiguiente(encargadoDefecto);
         
         // Crear excusas de diferentes tipos
-        Excusa excusaTrivial = new Excusa((EmpleadoExcusador)empleado1, "Excusa trivial", "TRIVIAL");
-        Excusa excusaModerada = new Excusa((EmpleadoExcusador)empleado1, "Excusa moderada", "MODERADA");
-        Excusa excusaCompleja = new Excusa((EmpleadoExcusador)empleado2, "Excusa compleja", "COMPLEJA");
-        Excusa excusaInverosimil = new Excusa((EmpleadoExcusador)empleado2, "Excusa inverosimil", "INVEROSIMIL");
+        Excusa excusaTrivial = new Excusa((EmpleadoExcusador)empleado1, "ME_QUEDE_DORMIDO", "TRIVIAL");
+        Excusa excusaModerada = new Excusa((EmpleadoExcusador)empleado1, "CUIDADO_FAMILIAR", "MODERADA");
+        Excusa excusaCompleja = new Excusa((EmpleadoExcusador)empleado2, "PROBLEMA_TRANSPORTE", "COMPLEJA");
+        Excusa excusaInverosimil = new Excusa((EmpleadoExcusador)empleado2, "INVASION_EXTRATERRESTRE", "INVEROSIMIL");
         
         System.out.println("\n=== PRUEBA 1: Excusa Trivial ===");
         recepcionista.manejarExcusa(excusaTrivial);
@@ -60,5 +59,6 @@ public class TestSistema {
         recepcionista.manejarExcusa(excusaInverosimil);
         
         System.out.println("\n✅ Todas las pruebas completadas exitosamente!");
+        System.out.println("📋 Se han registrado todos los logs de auditoría.");
     }
 } 
